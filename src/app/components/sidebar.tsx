@@ -60,7 +60,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     <Box
       transition="3s ease"
       //bg={useColorModeValue("white", "gray.900")}
-      bgColor={"blue.500"}
+      bgColor={"primary.500"}
+      color={"white"}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: 60 }}
@@ -95,7 +96,7 @@ const NavItem = ({ icon, link, children, ...rest }: NavItemProps) => {
           role="group"
           cursor="pointer"
           _hover={{
-            bg: "cyan.400",
+            bg: "primary.600",
             color: "white",
           }}
           {...rest}
@@ -224,10 +225,22 @@ const SidebarWithHeader = ({ children }: { children: React.ReactNode }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }} p="4" minH={"80vh"}>
         {/* Content */}
         {children}
       </Box>
+      <Flex
+        ml={{ base: 0, md: 60 }}
+        px={{ base: 4, md: 4 }}
+        w={"full"}
+        h={"10vh"}
+        textColor={"white"}
+        bgColor={"primary.800"}
+        justifyContent={"flex-start"}
+        alignItems={"center"}
+      >
+        Created by kang mus.
+      </Flex>
     </Box>
   );
 };
