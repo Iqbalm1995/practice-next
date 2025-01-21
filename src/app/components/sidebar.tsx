@@ -229,18 +229,6 @@ const SidebarWithHeader = ({ children }: { children: React.ReactNode }) => {
         {/* Content */}
         {children}
       </Box>
-      <Flex
-        ml={{ base: 0, md: 60 }}
-        px={{ base: 4, md: 4 }}
-        w={"full"}
-        h={"10vh"}
-        textColor={"white"}
-        bgColor={"primary.800"}
-        justifyContent={"flex-start"}
-        alignItems={"center"}
-      >
-        Created by kang mus.
-      </Flex>
     </Box>
   );
 };
