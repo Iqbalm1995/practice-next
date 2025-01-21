@@ -1,10 +1,21 @@
-function settingsPage() {
+"use client";
+
+import SidebarWithHeader from "@/app/components/sidebar";
+import { Box, Card, CardBody, CardHeader } from "@chakra-ui/react";
+
+function SettingsPage() {
   return (
-    <div>
-      <h1>Settings</h1>
-      <p>Settings page content</p>
-    </div>
+    <SidebarWithHeader>
+      <Card>
+        <CardHeader>Setting</CardHeader>
+        <CardBody>
+          <Box>
+            <p>Setting page content</p>
+          </Box>
+        </CardBody>
+      </Card>
+    </SidebarWithHeader>
   );
 }
 
-export default settingsPage;
+export default SettingsPage;

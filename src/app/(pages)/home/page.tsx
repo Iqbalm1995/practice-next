@@ -1,10 +1,21 @@
-function homePage() {
+"use client";
+
+import SidebarWithHeader from "@/app/components/sidebar";
+import { Box, Card, CardBody, CardHeader } from "@chakra-ui/react";
+
+function HomePage() {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>This is the home page.</p>
-    </div>
+    <SidebarWithHeader>
+      <Card>
+        <CardHeader>Home</CardHeader>
+        <CardBody>
+          <Box>
+            <p>Home page content</p>
+          </Box>
+        </CardBody>
+      </Card>
+    </SidebarWithHeader>
   );
 }
 
-export default homePage;
+export default HomePage;
