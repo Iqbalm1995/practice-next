@@ -79,8 +79,8 @@ function UsersPage() {
   const [totalData, settotalData] = useState<number>(0);
 
   useEffect(() => {
-    setdataUsers(fakeDataUser);
-    settotalData(fakeDataUser.length);
+    // setdataUsers(fakeDataUser);
+    settotalData(dataUsers.length);
   }, [dataUsers]);
 
   // Setup Pagination Tabel
@@ -157,9 +157,40 @@ function UsersPage() {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      console.log(values);
+      if (getUser(values.username)) {
+        updateUser(values);
+      } else {
+        addUser(values);
+      }
+      onClose;
     },
   });
+
+  // Function to get a user by username
+  const getUser = (username: string) => {
+    return dataUsers.find((user) => user.username === username);
+  };
+
+  // Function to add a user
+  const addUser = (newUser: userData) => {
+    setdataUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
+  // Function to update a user by username
+  const updateUser = (updatedUser: userData) => {
+    setdataUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.username === updatedUser.username ? updatedUser : user
+      )
+    );
+  };
+
+  // Function to remove a user by username
+  const removeUser = (usernameToRemove: string) => {
+    setdataUsers((prevUsers) =>
+      prevUsers.filter((user) => user.username !== usernameToRemove)
+    );
+  };
 
   return (
     <SidebarWithHeader>
@@ -205,10 +236,10 @@ function UsersPage() {
                       value={formikUser.values.username}
                       placeholder="Isi username..."
                     />
+                    <FormErrorMessage>
+                      {formikUser.errors.username ? "Isi dulu bg..." : ""}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormErrorMessage>
-                    {formikUser.errors.username}
-                  </FormErrorMessage>
                 </>
 
                 <>
@@ -225,8 +256,10 @@ function UsersPage() {
                       value={formikUser.values.name}
                       placeholder="Isi nama..."
                     />
+                    <FormErrorMessage>
+                      {formikUser.errors.name ? "Isi dulu bg..." : ""}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormErrorMessage>{formikUser.errors.name}</FormErrorMessage>
                 </>
 
                 <>
@@ -240,11 +273,13 @@ function UsersPage() {
                       name="email"
                       type="email"
                       onChange={formikUser.handleChange}
-                      value={formikUser.values.name}
+                      value={formikUser.values.email}
                       placeholder="Isi email (ex : yourmail@mail.com)..."
                     />
+                    <FormErrorMessage>
+                      {formikUser.errors.email ? "Isi dulu bg..." : ""}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormErrorMessage>{formikUser.errors.email}</FormErrorMessage>
                 </>
 
                 <>
@@ -265,6 +300,9 @@ function UsersPage() {
                       <option value="user">User</option>
                       <option value="editor">Editor</option>
                     </Select>
+                    <FormErrorMessage>
+                      {formikUser.errors.role ? "Isi dulu bg..." : ""}
+                    </FormErrorMessage>
                   </FormControl>
                 </>
               </Box>
