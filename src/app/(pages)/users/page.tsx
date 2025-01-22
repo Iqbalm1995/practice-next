@@ -128,8 +128,39 @@ function UsersPage() {
         header: () => <Text fontWeight={600}>Role</Text>,
         footer: (props) => props.column.id,
       },
+      {
+        accessorFn: (row) => row.username,
+        id: "action",
+        cell: (info) => (
+          <>
+            <Button
+              onClick={() => {
+                handleUpdateModal(info.row.original.username);
+                console.log(info.row.original.username);
+              }}
+            >
+              Edit
+            </Button>{" "}
+            |{" "}
+            <Button
+              onClick={() => {
+                handleDeleteUser(info.row.original.username);
+                console.log(info.row.original.username);
+              }}
+            >
+              Delete
+            </Button>
+          </>
+        ),
+        header: () => (
+          <Text fontWeight={600} textAlign="center">
+            Action{" "}
+          </Text>
+        ),
+        footer: (props) => props.column.id,
+      },
     ],
-    []
+    [dataUsers]
   );
 
   // setup tanstack react-table
@@ -159,16 +190,21 @@ function UsersPage() {
     onSubmit: async (values) => {
       if (getUser(values.username)) {
         updateUser(values);
+        formikUser.setValues(initValueUser);
+        onClose();
       } else {
         addUser(values);
+        formikUser.setValues(initValueUser);
+        onClose();
       }
-      onClose;
     },
   });
 
   // Function to get a user by username
   const getUser = (username: string) => {
-    return dataUsers.find((user) => user.username === username);
+    const user = dataUsers.find((user) => user.username == username);
+    console.log(user);
+    return user;
   };
 
   // Function to add a user
@@ -192,6 +228,24 @@ function UsersPage() {
     );
   };
 
+  const handleAddModal = () => {
+    formikUser.setValues(initValueUser);
+    onOpen();
+  };
+
+  const handleUpdateModal = (username: string) => {
+    const user = dataUsers.find((user) => user.username == username);
+    console.log(user);
+    if (user) {
+      formikUser.setValues(user);
+      onOpen();
+    }
+  };
+
+  const handleDeleteUser = (username: string) => {
+    removeUser(username);
+  };
+
   return (
     <SidebarWithHeader>
       <HeaderContent {...HeaderDataContent} />
@@ -199,7 +253,7 @@ function UsersPage() {
         <CardHeader>
           <Flex justifyContent={"space-between"}>
             <Text>{HeaderDataContent.titleName}</Text>
-            <Button colorScheme="primary" onClick={onOpen}>
+            <Button colorScheme="primary" onClick={() => handleAddModal()}>
               Add User
             </Button>
           </Flex>
