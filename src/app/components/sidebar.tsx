@@ -26,6 +26,7 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiUser,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import Link from "next/link";
@@ -52,6 +53,7 @@ interface SidebarProps extends BoxProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, location: "/" },
+  { name: "User", icon: FiUser, location: "/users" },
   { name: "Settings", icon: FiSettings, location: "/settings" },
 ];
 
