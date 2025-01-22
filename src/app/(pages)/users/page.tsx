@@ -9,7 +9,11 @@ import {
   TableContent,
   TableControlContent,
 } from "@/app/components/tableContent";
-import { fakeDataUser, userData } from "@/app/types/userInterface";
+import {
+  fakeDataUser,
+  initValueUser,
+  userData,
+} from "@/app/types/userInterface";
 import {
   Box,
   Button,
@@ -19,6 +23,7 @@ import {
   Divider,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Grid,
   GridItem,
@@ -52,20 +57,23 @@ import {
   PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
-import { use, useEffect, useMemo, useState } from "react";
-import {
-  BsChevronBarLeft,
-  BsChevronBarRight,
-  BsChevronLeft,
-  BsChevronRight,
-} from "react-icons/bs";
+import { useFormik } from "formik";
+import { useEffect, useMemo, useState } from "react";
+import * as Yup from "yup";
 
 const HeaderDataContent: HeaderContentProps = {
   titleName: "User Data",
   breadCrumb: ["Home", "User", "Data"],
 };
 
-function SettingsPage() {
+const FormSchema = Yup.object().shape({
+  username: Yup.string().required("Required"),
+  name: Yup.string().required("Required"),
+  email: Yup.string().required("Required"),
+  role: Yup.string().required("Required"),
+});
+
+function UsersPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [dataUsers, setdataUsers] = useState<userData[]>([]);
   const [totalData, settotalData] = useState<number>(0);
@@ -142,6 +150,17 @@ function SettingsPage() {
     manualPagination: false,
   });
 
+  // Configuration Formik
+  const formikUser = useFormik({
+    initialValues: initValueUser,
+    validationSchema: FormSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+
   return (
     <SidebarWithHeader>
       <HeaderContent {...HeaderDataContent} />
@@ -165,68 +184,105 @@ function SettingsPage() {
       {/* MODAL FORM USER */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Form User</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box maxWidth="400px" mx="auto" mt={4}>
-              <FormControl mb={4}>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  name="username"
-                  // value={formData.username}
-                  // onChange={handleInputChange}
-                  placeholder="Enter username"
-                />
-              </FormControl>
 
-              <FormControl mb={4}>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  name="name"
-                  // value={formData.name}
-                  // onChange={handleInputChange}
-                  placeholder="Enter name"
-                />
-              </FormControl>
+        <form onSubmit={formikUser.handleSubmit}>
+          <ModalContent>
+            <ModalHeader>Form User</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Box maxWidth="400px" mx="auto" mt={4}>
+                <>
+                  <FormControl
+                    id="username"
+                    isInvalid={formikUser.errors.username ? true : false}
+                  >
+                    <FormLabel>Username</FormLabel>
+                    <Input
+                      id="username"
+                      name="username"
+                      type="text"
+                      onChange={formikUser.handleChange}
+                      value={formikUser.values.username}
+                      placeholder="Isi username..."
+                    />
+                  </FormControl>
+                  <FormErrorMessage>
+                    {formikUser.errors.username}
+                  </FormErrorMessage>
+                </>
 
-              <FormControl mb={4}>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  name="email"
-                  type="email"
-                  // value={formData.email}
-                  // onChange={handleInputChange}
-                  placeholder="Enter email"
-                />
-              </FormControl>
+                <>
+                  <FormControl
+                    id="name"
+                    isInvalid={formikUser.errors.name ? true : false}
+                  >
+                    <FormLabel>Nama</FormLabel>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      onChange={formikUser.handleChange}
+                      value={formikUser.values.name}
+                      placeholder="Isi nama..."
+                    />
+                  </FormControl>
+                  <FormErrorMessage>{formikUser.errors.name}</FormErrorMessage>
+                </>
 
-              <FormControl mb={4}>
-                <FormLabel>Role</FormLabel>
-                <Select
-                  name="role"
-                  // value={formData.role}
-                  // onChange={handleInputChange}
-                  placeholder="Select role"
-                >
-                  <option value="admin">Admin</option>
-                  <option value="user">User</option>
-                  <option value="editor">Editor</option>
-                </Select>
-              </FormControl>
-            </Box>
-          </ModalBody>
+                <>
+                  <FormControl
+                    id="email"
+                    isInvalid={formikUser.errors.email ? true : false}
+                  >
+                    <FormLabel>E-mail</FormLabel>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      onChange={formikUser.handleChange}
+                      value={formikUser.values.name}
+                      placeholder="Isi email (ex : yourmail@mail.com)..."
+                    />
+                  </FormControl>
+                  <FormErrorMessage>{formikUser.errors.email}</FormErrorMessage>
+                </>
 
-          <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              Kembali
-            </Button>
-            <Button colorScheme="primary">Simpan Data</Button>
-          </ModalFooter>
-        </ModalContent>
+                <>
+                  <FormControl
+                    id="role"
+                    isInvalid={formikUser.errors.role ? true : false}
+                    mb={4}
+                  >
+                    <FormLabel>Role</FormLabel>
+                    <Select
+                      id="role"
+                      name="role"
+                      onChange={formikUser.handleChange}
+                      value={formikUser.values.role}
+                      placeholder="Select role"
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                      <option value="editor">Editor</option>
+                    </Select>
+                  </FormControl>
+                </>
+              </Box>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button variant="ghost" mr={3} onClick={onClose}>
+                Kembali
+              </Button>
+              <Button colorScheme="primary" type="submit">
+                Simpan Data
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
       </Modal>
     </SidebarWithHeader>
   );
 }
 
-export default SettingsPage;
+export default UsersPage;

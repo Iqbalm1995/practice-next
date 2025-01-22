@@ -5,6 +5,13 @@ export interface userData {
   role?: string;
 }
 
+export const initValueUser: userData = {
+  username: "",
+  name: "",
+  email: "",
+  role: "",
+};
+
 export const fakeDataUser: userData[] = [
   {
     username: "john_doe",
