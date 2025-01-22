@@ -18,9 +18,20 @@ import {
   CardHeader,
   Divider,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
   Heading,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
   Table,
   TableCaption,
   TableContainer,
@@ -31,6 +42,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import {
   ColumnDef,
@@ -54,6 +66,7 @@ const HeaderDataContent: HeaderContentProps = {
 };
 
 function SettingsPage() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [dataUsers, setdataUsers] = useState<userData[]>([]);
   const [totalData, settotalData] = useState<number>(0);
 
@@ -133,7 +146,14 @@ function SettingsPage() {
     <SidebarWithHeader>
       <HeaderContent {...HeaderDataContent} />
       <Card>
-        <CardHeader>{HeaderDataContent.titleName}</CardHeader>
+        <CardHeader>
+          <Flex justifyContent={"space-between"}>
+            <Text>{HeaderDataContent.titleName}</Text>
+            <Button colorScheme="primary" onClick={onOpen}>
+              Add User
+            </Button>
+          </Flex>
+        </CardHeader>
         <CardBody>
           {/* Table Component */}
           <TableContent table={table} />
@@ -142,6 +162,69 @@ function SettingsPage() {
           <Box>{/* <pre>{JSON.stringify(table, null, 2)}</pre> */}</Box>
         </CardBody>
       </Card>
+      {/* MODAL FORM USER */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Form User</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box maxWidth="400px" mx="auto" mt={4}>
+              <FormControl mb={4}>
+                <FormLabel>Username</FormLabel>
+                <Input
+                  name="username"
+                  // value={formData.username}
+                  // onChange={handleInputChange}
+                  placeholder="Enter username"
+                />
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  name="name"
+                  // value={formData.name}
+                  // onChange={handleInputChange}
+                  placeholder="Enter name"
+                />
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  name="email"
+                  type="email"
+                  // value={formData.email}
+                  // onChange={handleInputChange}
+                  placeholder="Enter email"
+                />
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel>Role</FormLabel>
+                <Select
+                  name="role"
+                  // value={formData.role}
+                  // onChange={handleInputChange}
+                  placeholder="Select role"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                  <option value="editor">Editor</option>
+                </Select>
+              </FormControl>
+            </Box>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Kembali
+            </Button>
+            <Button colorScheme="primary">Simpan Data</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </SidebarWithHeader>
   );
 }
