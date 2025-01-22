@@ -160,7 +160,7 @@ function UsersPage() {
         footer: (props) => props.column.id,
       },
     ],
-    [dataUsers]
+    [dataUsers] // karena crud local state, jadi di taruh di dependency dari dataUsers state
   );
 
   // setup tanstack react-table
@@ -228,11 +228,13 @@ function UsersPage() {
     );
   };
 
+  // Fungsi to add modal user
   const handleAddModal = () => {
     formikUser.setValues(initValueUser);
     onOpen();
   };
 
+  // Fungsi show modal edit user
   const handleUpdateModal = (username: string) => {
     const user = dataUsers.find((user) => user.username == username);
     console.log(user);
@@ -242,6 +244,7 @@ function UsersPage() {
     }
   };
 
+  // fungsi delete user
   const handleDeleteUser = (username: string) => {
     removeUser(username);
   };
