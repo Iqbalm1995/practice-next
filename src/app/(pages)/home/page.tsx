@@ -1,5 +1,3 @@
-"use client";
-
 import {
   HeaderContent,
   HeaderContentProps,
@@ -22,7 +20,7 @@ function HomePage() {
       <Card>
         <CardHeader>Home</CardHeader>
         <CardBody>
-          <Box>
+          <Box minH={"80vh"}>
             <p>Home page content</p>
           </Box>
         </CardBody>

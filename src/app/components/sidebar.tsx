@@ -1,3 +1,5 @@
+"use client";
+
 import {
   IconButton,
   Avatar,
@@ -19,6 +21,8 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Button,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -30,6 +34,7 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import Link from "next/link";
+import { FaMoon, FaSun } from "react-icons/fa6";
 
 interface LinkItemProps {
   name: string;
@@ -121,6 +126,7 @@ const NavItem = ({ icon, link, children, ...rest }: NavItemProps) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -157,6 +163,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           aria-label="open menu"
           icon={<FiBell />}
         />
+        <Button onClick={toggleColorMode}>
+          {colorMode === "light" ? <FaMoon /> : <FaSun />}
+        </Button>
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
@@ -188,7 +197,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue("white", "gray.900")}
+              bg={useColorModeValue("white", "gray.700")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Profile</MenuItem>

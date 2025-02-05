@@ -3,6 +3,13 @@
 
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
+import "@fontsource/poppins/400.css"; // Regular weight
+import "@fontsource/poppins/500.css"; // Medium weight
+import "@fontsource/poppins/600.css"; // Semi-bold weight
+import "@fontsource/poppins/700.css"; // Bold weight
+
+import "@fontsource/source-sans-pro/400.css";
+import "@fontsource/source-sans-pro/700.css";
 
 const colors = {
   black: "#0c1015",
@@ -142,15 +149,15 @@ const colors = {
 
 const config: ThemeConfig = {
   initialColorMode: "light", // Default color mode
-  useSystemColorMode: false, // Disable system preference color mode
+  useSystemColorMode: true, // Disable system preference color mode
 };
 
 const theme = extendTheme({
   config,
   colors,
   fonts: {
-    heading: "Merriweather, serif",
-    body: "Merriweather, serif",
+    heading: "Source Sans Pro, Poppins, Merriweather, serif",
+    body: "Source Sans Pro, Poppins, Merriweather, serif",
   },
 });
 
